@@ -2,6 +2,12 @@
 
 **Learning sources:**
 
--https://learnopengl.com
--https://www.youtube.com
--https://claude.ai
+- https://learnopengl.com
+- https://claude.ai
+
+***API implemented:*** OpenGL
+
+***Libraries:***
+- GLFW
+- GLAD
+- GLM
