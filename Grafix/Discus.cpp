@@ -169,9 +169,6 @@ int main()
     int projLoc = glGetUniformLocation(shaderProgram, "projection");
     int colorTintLoc = glGetUniformLocation(shaderProgram, "uColorTint");
     int uIsHoleLoc = glGetUniformLocation(shaderProgram, "uIsHole");
-    
-    // uncomment this call to draw in wireframe polygons.
-    //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
     // render loop
 
