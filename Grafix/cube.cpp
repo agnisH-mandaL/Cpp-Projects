@@ -57,7 +57,7 @@ int main()
 #endif
 
     // glfw window creation
-    // --------------------
+
     GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Cubus", NULL, NULL);
     glfwSetWindowPos(window, 700, 250);
     if (window == NULL)
@@ -70,7 +70,7 @@ int main()
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
     // glad: load all OpenGL function pointers
-    // ---------------------------------------
+
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
         std::cout << "Failed to initialize GLAD" << std::endl;
@@ -117,61 +117,31 @@ int main()
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
 
-    // set up vertex data (and buffer(s)) and configure vertex attributes
     
-    /* const int segments = 21;
-    const float radius = 0.8f;
-    float rgb3[]={0.0f, 0.992f, 1.0f};
-    float rgb1[]={1.0f, 0.0f, 0.992f};
-    float rgb2[]={0.992f, 1.0f, 0.0f};
-
-    std:: vector<float> vertices;
-    vertices.push_back(0.0f);
-    vertices.push_back(0.0f);
-    vertices.push_back(0.0f);
-    for (int j=0;j<3;j++){vertices.push_back(rgb3[j]);}
-
-    for (int i = 0; i <= segments; i++)
-    {
-        float angle = 2.0f * 3.141f * i / segments;
-
-        vertices.push_back(radius * cos(angle));
-        vertices.push_back(radius * sin(angle));
-        vertices.push_back(0.0f);
-        if (i%3==0){
-            for (int j=0;j<3;j++){vertices.push_back(rgb1[j]);}
-        }
-        else if (i%3==1){
-            for (int j=0;j<3;j++){vertices.push_back(rgb2[j]);}
-        }
-        else{
-            for (int j=0;j<3;j++){vertices.push_back(rgb3[j]);}
-        }
-    }  */
     float vertices[] = {
     // positions         // colors
-    0.5f,0.5f,0.5f,  0.0f, 0.0f, 1.0f,   // 1
-    -0.5f,0.5f,0.5f,  1.0f, 0.0f, 1.0f,
-    -0.5f,-0.5f,0.5f,  0.0f, 1.0f, 1.0f,
-    0.5f,-0.5f,0.5f,  1.0f, 1.0f, 1.0f,
+    0.5f,0.5f,0.5f,  0.0f, 0.0f, 1.0f,   //1
+    -0.5f,0.5f,0.5f,  1.0f, 0.0f, 1.0f,  //2
+    -0.5f,-0.5f,0.5f,  0.0f, 1.0f, 1.0f, //3
+    0.5f,-0.5f,0.5f,  1.0f, 1.0f, 1.0f,  //4
     
-    0.5f,0.5f,-0.5f,  0.0f, 0.0f, 1.0f,
-    -0.5f,0.5f,-0.5f,  1.0f, 0.0f, 1.0f,
-   -0.5f,-0.5f,-0.5f,  0.0f, 1.0f, 1.0f,
-    0.5f,-0.5f,-0.5f,  1.0f, 1.0f, 1.0f
+    0.5f,0.5f,-0.5f,  0.0f, 0.0f, 1.0f,  //5
+    -0.5f,0.5f,-0.5f,  1.0f, 0.0f, 1.0f, //6
+   -0.5f,-0.5f,-0.5f,  0.0f, 1.0f, 1.0f, //7
+    0.5f,-0.5f,-0.5f,  1.0f, 1.0f, 1.0f  //8
 };    
 unsigned int indices[] = {
-    // front
-    0, 1, 2,   2, 3, 0,
-    // back
+
+    0, 1, 2,   2, 3, 0,  
+
     4, 5, 6,   6, 7, 4,
-    // left
+
     4, 0, 3,   3, 7, 4,
-    // right
+
     1, 5, 6,   6, 2, 1,
-    // bottom
+
     4, 5, 1,   1, 0, 4,
-    // top
+
     3, 2, 6,   6, 7, 3
 };
 
@@ -179,7 +149,7 @@ unsigned int indices[] = {
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
     glGenBuffers(1, &EBO);
-    // bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
+   
     glBindVertexArray(VAO);
 
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
@@ -192,11 +162,9 @@ unsigned int indices[] = {
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));    // note that this is allowed, the call to glVertexAttribPointer registered VBO as the vertex attribute's bound vertex buffer object so afterwards we can safely unbind
     glBindBuffer(GL_ARRAY_BUFFER, 0); 
-    //glBindVertexArray(0);
+
     glEnableVertexAttribArray(1); 
 
-    // You can unbind the VAO afterwards so other VAO calls won't accidentally modify this VAO, but this rarely happens. Modifying other
-    // VAOs requires a call to glBindVertexArray anyways so we generally don't unbind VAOs (nor VBOs) when it's not directly necessary.
     glUseProgram(shaderProgram); 
     
     int modelLoc = glGetUniformLocation(shaderProgram, "model");
@@ -204,19 +172,15 @@ unsigned int indices[] = {
     int projLoc = glGetUniformLocation(shaderProgram, "projection");
     int colorTintLoc = glGetUniformLocation(shaderProgram, "uColorTint");
     int uIsHoleLoc = glGetUniformLocation(shaderProgram, "uIsHole");
-    // uncomment this call to draw in wireframe polygons.
-    //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     
     // render loop
-    // -----------
+
     while (!glfwWindowShouldClose(window))
     {
-        // input
-        // -----
         processInput(window);
 
         // render
-        // ------
+
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         float angle = (float)glfwGetTime();          // grows each frame
@@ -250,18 +214,6 @@ unsigned int indices[] = {
         glUniform3f(colorTintLoc, 0.0f, 0.0f, 0.0f); 
         glUniform1i(uIsHoleLoc, true);  
         glDrawElements(GL_TRIANGLES, 36,GL_UNSIGNED_INT, 0);
-        
-       /*  glm::mat4 model3 = glm::mat4(1.0f);
-        model3 = glm::translate(model3, glm::vec3(0.0f, 0.0f, -0.02f));  // right
-        model3 = glm::rotate(model3, angle * glm::radians(50.0f), glm::vec3(1.0f, 2.0f, 1.0f));             // same spin
-        //model3 = glm::scale(model3, glm::vec3(0.2f, 0.2f, 0.2f));      // half size
-
-        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model3));
-        glUniform3f(colorTintLoc, 0.2f, 0.2f, 0.2f); // red tint
-
-        glDrawArrays(GL_TRIANGLE_FAN, 0, segments + 2); */
-
-        //glBindVertexArray(0); // no need to unbind it every time 
         
         glfwSwapBuffers(window);
         glfwPollEvents();
